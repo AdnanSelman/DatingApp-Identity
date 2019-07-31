@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
 import { User } from '../_models/user';
+import { element } from '@angular/core/src/render3/instructions';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,17 @@ export class AuthService {
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  roleMatch(allowedRoles): boolean {
+    let isMatch = false;
+    const userRoles = this.decodedToken.role as Array<string>;
+    allowedRoles.forEach(_element => {
+      if (userRoles.includes(_element)) {
+        isMatch = true;
+        return;
+      }
+    });
+    return isMatch;
   }
 }
