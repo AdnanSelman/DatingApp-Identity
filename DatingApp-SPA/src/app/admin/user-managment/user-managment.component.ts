@@ -30,11 +30,22 @@ export class UserManagmentComponent implements OnInit {
 
   editRolesModal(user: User) {
     const initialState = {
-     user,
-     roles: this.getRolesArray(user)
+    user,
+    roles: this.getRolesArray(user)
     };
     this.bsModalRef = this.modalService.show(RolesModalComponent, {initialState});
-    this.bsModalRef.content.closeBtnName = 'Close';
+    this.bsModalRef.content.updateSelectedRoles.subscribe((values) => {
+      const rolesToUpdate = {
+        roleNames: [...values.filter(el => el.checked === true).map(el => el.name)]
+      };
+      if (rolesToUpdate) {
+        this.adminService.updateUserRoles(user, rolesToUpdate).subscribe(() => {
+          user.roles = [...rolesToUpdate.roleNames];
+        }, error => {
+          console.log(error);
+        });
+      }
+    });
   }
 
   private getRolesArray(user) {
@@ -49,7 +60,7 @@ export class UserManagmentComponent implements OnInit {
 
     for (let i = 0; i < availableRoles.length; i++) {
       let isMatch = false;
-      for (let j = 0; i < userRoles.length; j++) {
+      for (let j = 0; j < userRoles.length; j++) {
         if (availableRoles[i].name === userRoles[j]) {
           isMatch = true;
           availableRoles[i].checked = true;
