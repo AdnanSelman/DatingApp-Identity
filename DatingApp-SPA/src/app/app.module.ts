@@ -35,6 +35,9 @@ import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HasRoleDirective } from './_directives/hasRole.directive';
+import { UserManagmentComponent } from './admin/user-managment/user-managment.component';
+import { PhotoManagmentComponent } from './admin/photo-managment/photo-managment.component';
+import { AdminService } from './_services/admin.service';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -56,7 +59,9 @@ export function tokenGetter() {
     TimeAgoPipe,
     MemberMessagesComponent,
     AdminPanelComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    UserManagmentComponent,
+    PhotoManagmentComponent
   ],
   imports: [
     BrowserModule,
@@ -90,7 +95,8 @@ export function tokenGetter() {
       MemberEditResolver,
       PreventUnsavedChanges,
       ListsResolver,
-      MessagesResolver
+      MessagesResolver,
+      AdminService
     ],
   bootstrap: [AppComponent]
 })
